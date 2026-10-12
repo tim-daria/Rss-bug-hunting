@@ -11,9 +11,12 @@ let currentFilter = "all";
 let nextId = 1;
 
 function addTask() {
-  const text = input.value;
+  const text = input.value.trim();
   errorEl.hidden = true;
-  tasks.push({ id: nextId++, text: text, done: false });
+  if (text) {
+    tasks.push({ id: nextId, text: text, done: false });
+    nextId += 1;
+  }
   input.value = "";
   render();
 }
@@ -43,8 +46,9 @@ function updateCounter() {
 }
 
 function render() {
+  list.innerHTML = "";
   const visible = getVisibleTasks();
-  for (let i = 1; i <= visible.length; i++) {
+  for (let i = 0; i < visible.length; i++) {
     const task = visible[i];
     const li = document.createElement("li");
     li.className = "task";
@@ -69,7 +73,7 @@ function render() {
   updateCounter();
 }
 
-addBtn.addEventListener("dblclick", addTask);
+addBtn.addEventListener("click", addTask);
 clearBtn.addEventListener("click", clearCompleted);
 
 filterButtons.forEach((btn) => {
